@@ -74,36 +74,50 @@ public class SecurityConfig {
             String email = (String) attributes.get("email");
             String name = (String) attributes.get("name");
 
-            // Busca o crea el usuario en la base de datos
             Usuario usuario = userRepository.findByEmail(email);
+            boolean esNuevoUsuario = false;
+
             if (usuario == null) {
                 usuario = new Usuario();
                 usuario.setEmail(email);
                 usuario.setUsername(name != null ? name : "Usuario sin nombre");
                 usuario.setPassword(passwordEncoder().encode("1")); // Contraseña predeterminada
-                userRepository.save(usuario); // Guarda el usuario con datos mínimos
-                response.sendRedirect("/register.html");
-            } else {
-                if (usuario.getRol() == null || usuario.getRol().isBlank()) {
-                    response.sendRedirect("/register.html");
-                } else {
-                    switch (usuario.getRol()) {
-                        case "CLIENTE" -> response.sendRedirect("/home.html");
-                        case "PROVEEDOR" -> response.sendRedirect("/calendarioempresa.html");
-                        default -> response.sendRedirect("/register.html");
-                    }
-                }
+                userRepository.save(usuario);
+                esNuevoUsuario = true;
             }
 
-           /* try {
-                // Envía el correo de bienvenida
-                emailService.enviarCorreo(email, "¡Bienvenido a Turnify!", "Hola " + name + ", gracias por registrarte en Turnify.");
-            } catch (MessagingException e) {
-                e.printStackTrace(); // Registra la excepción en el log
+            // Enviar correo
+            try {
+                if (esNuevoUsuario) {
+                    emailService.enviarCorreo(
+                            email,
+                            "¡Bienvenido a Turnify!",
+                            "Hola " + name + ", gracias por registrarte en Turnify. Esperamos que disfrutes la experiencia."
+                    );
+                } else {
+                    emailService.enviarCorreo(
+                            email,
+                            "Inicio de sesión en Turnify",
+                            "Hola " + name + ", has iniciado sesión correctamente en Turnify."
+                    );
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); // Log de errores, opcionalmente podrías usar logger
             }
-*/
+
+            // Redirección
+            if (usuario.getRol() == null || usuario.getRol().isBlank()) {
+                response.sendRedirect("/register.html");
+            } else {
+                switch (usuario.getRol()) {
+                    case "CLIENTE" -> response.sendRedirect("/home.html");
+                    case "PROVEEDOR" -> response.sendRedirect("/calendarioempresa.html");
+                    default -> response.sendRedirect("/register.html");
+                }
+            }
         };
     }
+
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
