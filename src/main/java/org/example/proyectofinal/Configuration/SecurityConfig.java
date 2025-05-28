@@ -111,7 +111,7 @@ public class SecurityConfig {
             } else {
                 switch (usuario.getRol()) {
                     case "CLIENTE" -> response.sendRedirect("/home.html");
-                    case "PROVEEDOR" -> response.sendRedirect("/calendarioempresa.html");
+                    case "PROVEEDOR" -> response.sendRedirect("/calendarioProveedor.html");
                     default -> response.sendRedirect("/register.html");
                 }
             }
