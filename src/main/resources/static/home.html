@@ -1,136 +1,179 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Turnify</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Estilos externos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            font-family: Jura,serif;
-            background-color: #f8f5eb;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
+        :root {
+            --main-orange: #ffa56f;
+            --soft-bg: #fff8f1;
+            --dark-orange: #d8804b;
         }
-        .jura-<uniquifier> {
-                   font-family: "Jura", sans-serif;
-                   font-optical-sizing: auto;
-                   font-weight: 33;
-                   font-style: normal;
-               }
+
+        body {
+            font-family: 'Jura', sans-serif;
+            background-color: var(--soft-bg);
+            background-image: url("image/Fondo.jpeg");
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            font-weight: bold;
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: #444;
+        }
+
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: var(--main-orange);
+        }
+
+        .navbar-brand i {
+            color: var(--main-orange);
+        }
+
+        .bg-secondary {
+            background-color: var(--main-orange) !important;
+        }
+
+        .bg-light {
+            background-color: #fff !important;
+        }
+
+        .list-group-item {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--main-orange);
+            color: white;
+        }
+
+        .list-group .no-results {
+            background-color: #f5f5f5;
+            font-style: italic;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .card.bg-secondary {
+            background-color: var(--dark-orange) !important;
+        }
+
+        .card-title {
+            color: var(--main-orange);
+            font-weight: bold;
+        }
+
+        iframe {
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .input-group-text {
+            background-color: var(--main-orange);
+            color: white;
+            border: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--main-orange);
+            box-shadow: 0 0 0 0.25rem rgba(255,140,66,0.25);
+        }
+
+        .btn-outline-secondary {
+            color: var(--main-orange);
+            border-color: var(--main-orange);
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: var(--main-orange);
+            color: white;
+        }
     </style>
 </head>
 
-<body class="bg-light" style="background-image: url(image/Fondo.jpeg); background-size: cover; background-position: center;">
+<body>
 <!-- Header -->
 <header>
-    <!-- Inicio del menu -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light px-3" id="navMenu">
+    <nav class="navbar navbar-expand-md navbar-light bg-light px-3">
         <div class="container-fluid">
-            <!-- icono o nombre -->
-
             <a class="navbar-brand" href="home.html">
                 <i class="bi bi-calendar2-week"></i>
-                <span class="navbar-brand h1">Turnify</span>
+                <span class="h4 ms-2">Turnify</span>
             </a>
 
-            <!-- boton del menu -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- elementos del menu colapsable -->
-
-            <div class="collapse navbar-collapse" id="menu" >
+            <div class="collapse navbar-collapse" id="menu">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="home.html">Servicios</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="calendario.html">Calendario</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="toggle-theme">Modo Claro</a>
-                    </li>
-
-                    <li class="navbar-toggler">
-                        <a class="nav-link" href="usuario.html">Perfil</a>
-                    </li>
-
+                    <li class="nav-item"><a class="nav-link" href="home.html">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="calendario.html">Calendario</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="toggle-theme">Modo Claro</a></li>
+                    <li class="nav-item d-md-none"><a class="nav-link" href="usuario.html">Perfil</a></li>
                 </ul>
-                <i class="fas fa-usuario-circle fs-3"></i>
 
-                <hr class="d-md-none text-white-50">
-
-                <!-- enlaces redes sociales -->
-
-                <ul class="navbar-nav flex-row flex-wrap text-light">
-
-                    <li class="nav-item col-6 col-md-auto p-3">
+                <ul class="navbar-nav flex-row text-black">
+                    <li class="nav-item col-6 col-md-auto p-2">
                         <a class="text-black" href="https://github.com/marclecha05/ProyectoFinalGS.git">
-                            <i class="bi bi-github"></i>
+                            <i class="bi bi-github fs-5"></i>
                             <small class="d-md-none ms-2">GitHub</small>
                         </a>
                     </li>
-
                 </ul>
 
-                <!--boton Informacion -->
-
                 <form class="d-flex">
-                    <a class="btn btn-outline-secondary d-none d-md-inline-block " type="submit" href="usuario.html">Perfil</a>
+                    <a class="btn btn-outline-secondary d-none d-md-inline-block" href="usuario.html">Perfil</a>
                 </form>
-
-
             </div>
-
         </div>
     </nav>
 </header>
 
 <!-- Navbar secundaria -->
 <nav class="navbar navbar-dark bg-secondary px-3">
-    <a href="#" class="navbar-brand text-white">
-        <i class="fas fa-hamburger"></i> Restaurantes
-    </a>
-    <a href="#" class="navbar-brand text-white">
-        <i class="fas fa-hamburger"></i> Gimnasios
-    </a>
-    <a href="#" class="navbar-brand text-white">
-        <i class="fas fa-hamburger"></i> Peluquerias
-    </a>
-
+    <a href="#" class="navbar-brand text-white"><i class="fas fa-utensils me-2"></i> Restaurantes</a>
+    <a href="#" class="navbar-brand text-white"><i class="fas fa-dumbbell me-2"></i> Gimnasios</a>
+    <a href="#" class="navbar-brand text-white"><i class="fas fa-cut me-2"></i> Peluquerías</a>
 </nav>
 
 <!-- Sidebar y contenido -->
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-4">
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3">
-            <div class="list-group">
-                <div class="input-group my-2">
-                    <input type="text" id="searchProveedor" class="form-control" placeholder="Buscar...">
-                    <div id="proveedorList" class="border p-2 mt-2" style="max-height: 200px; overflow-y: auto;"></div>
+            <div class="list-group shadow bg-white p-2 rounded">
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="searchProveedor" class="form-control" placeholder="Buscar..." oninput="filterProveedores()">
                 </div>
-
-
-
             </div>
         </div>
 
         <!-- Panel derecho -->
         <div class="col-md-9">
-            <div class="card p-3">
+            <div class="card p-4">
                 <h5 id="servicioNombre" class="card-title">Seleccione un servicio</h5>
                 <div id="selectProveedor" class="card bg-secondary text-white text-center p-5">
                     MAPA
@@ -140,54 +183,42 @@
     </div>
 </div>
 
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
 <script>
     let proveedores = [];
     let selectedService = "restaurante";
     const data = [
-        { serviceName: "Fontanela", serviceType: "restaurante", location: "39.96252161264249, -0.26458602630444156" },
-        { serviceName: "come y callar", serviceType: "restaurante", location: "34.052235,-118.243683" },
+        { serviceName: "Fontanela", serviceType: "restaurante", location: "39.96252161264249,-0.26458602630444156" },
+        { serviceName: "Come y Callar", serviceType: "restaurante", location: "34.052235,-118.243683" },
         { serviceName: "Gimnasio X", serviceType: "gimnasio", location: "51.507351,-0.127758" },
-        { serviceName: "trim", serviceType: "gimnasio", location: "48.856613,2.352222" },
+        { serviceName: "Trim", serviceType: "gimnasio", location: "48.856613,2.352222" },
         { serviceName: "Peluquería 1", serviceType: "peluqueria", location: "41.902782,12.496366" },
-        { serviceName: "ferris", serviceType: "peluqueria", location: "35.689487,139.691711" }
+        { serviceName: "Ferris", serviceType: "peluqueria", location: "35.689487,139.691711" }
     ];
 
     function getProveedores() {
-        /* $.get("/proveedores", (data) => {
-             proveedores = data;
-             renderProveedores();
-         })
-             .fail((error) => console.error("Error al obtener proveedores:", error));*/
         setTimeout(() => {
             proveedores = data;
             renderProveedores();
-            console.log("Proveedores cargados:", proveedores);
-        }, 1000);
+        }, 500);
     }
 
     function renderProveedores() {
         const sidebar = document.querySelector(".list-group");
         const searchInput = document.getElementById("searchProveedor");
-        sidebar.innerHTML = '<div class="input-group my-2">' +
-            '<span class="input-group-text"><i class="fas fa-search"></i></span>' +
-            '<input type="text" class="form-control" placeholder="Buscar" oninput="filterProveedores()" id="searchProveedor">' +
-            '</div>';
-
-        let filtered = proveedores.filter(p => p.serviceType.toLowerCase() === selectedService);
         const query = searchInput?.value.toLowerCase() || "";
 
-        if (query) {
-            filtered = filtered.filter(p =>
-                p.serviceName.toLowerCase().includes(query)
-            );
-        }
+        let filtered = proveedores.filter(p => p.serviceType === selectedService);
+        if (query) filtered = filtered.filter(p => p.serviceName.toLowerCase().includes(query));
+
+        sidebar.querySelectorAll("button.list-group-item").forEach(e => e.remove());
+        sidebar.querySelectorAll(".no-results").forEach(e => e.remove());
 
         if (filtered.length === 0) {
             const noResults = document.createElement("div");
-            noResults.classList.add("list-group-item");
+            noResults.classList.add("list-group-item", "no-results");
             noResults.textContent = "No se encontraron resultados";
             sidebar.appendChild(noResults);
         } else {
@@ -195,78 +226,38 @@
                 const btn = document.createElement("button");
                 btn.classList.add("list-group-item", "list-group-item-action");
                 btn.textContent = proveedor.serviceName;
-                btn.addEventListener("click", () => loadMap(proveedor.location, proveedor.serviceName));
+                btn.onclick = () => loadMap(proveedor.location, proveedor.serviceName);
                 sidebar.appendChild(btn);
             });
         }
     }
 
     function filterProveedores() {
-        const searchInput = document.getElementById("searchProveedor");
-        const query = searchInput.value.toLowerCase();
-
-        const filtered = proveedores.filter(p =>
-            p.serviceType.toLowerCase() === selectedService &&
-            p.serviceName.toLowerCase().includes(query)
-        );
-
-        const sidebar = document.querySelector(".list-group");
-        const buttons = sidebar.querySelectorAll("button.list-group-item-action");
-
-        buttons.forEach(button => {
-            const buttonText = button.textContent.toLowerCase();
-            if (buttonText.includes(query)) {
-                button.style.display = "block";
-            } else {
-                button.style.display = "none";
-            }
-        });
-
-        // Si no hay botones visibles, muestra un mensaje
-        const visibleButtons = [...buttons].filter(b => b.style.display !== "none");
-        let noResults = sidebar.querySelector(".no-results");
-
-        if (visibleButtons.length === 0) {
-            if (!noResults) {
-                noResults = document.createElement("div");
-                noResults.classList.add("list-group-item", "no-results");
-                noResults.textContent = "No se encontraron resultados";
-                sidebar.appendChild(noResults);
-            }
-        } else if (noResults) {
-            noResults.remove();
-        }
+        renderProveedores();
     }
 
     function loadMap(location, serviceName) {
-        const mapContainer = document.querySelector(".card.bg-secondary");
-        const servicioNombreElement = document.getElementById("servicioNombre");
-        servicioNombreElement.textContent = serviceName;
-
-        mapContainer.innerHTML = `<iframe width="100%" height="400" frameborder="0"
-        style="border:0"
-        src="https://www.google.com/maps?q=${location}&output=embed"
-        allowfullscreen>
-        </iframe>
-        <h5 class="card-title mt-2">${serviceName}</h5>`;
+        document.getElementById("servicioNombre").textContent = serviceName;
+        document.getElementById("selectProveedor").innerHTML = `
+      <iframe width="100%" height="400" frameborder="0" style="border:0" src="https://www.google.com/maps?q=${location}&output=embed" allowfullscreen></iframe>
+      <h5 class="card-title mt-3">${serviceName}</h5>
+    `;
     }
 
     document.querySelectorAll(".navbar-brand").forEach(item => {
-        item.addEventListener("click", (event) => {
+        item.addEventListener("click", event => {
             event.preventDefault();
-            if (event.target.textContent.includes("Restaurantes")) {
-                selectedService = "restaurante";
-            } else if (event.target.textContent.includes("Gimnasios")) {
-                selectedService = "gimnasio";
-            } else if (event.target.textContent.includes("Peluquerias")) {
-                selectedService = "peluqueria";
-            }
+            const text = item.textContent.toLowerCase();
+            if (text.includes("restaurantes")) selectedService = "restaurante";
+            else if (text.includes("gimnasios")) selectedService = "gimnasio";
+            else if (text.includes("peluquerías")) selectedService = "peluqueria";
             renderProveedores();
         });
     });
 
-    // Inicialización
     document.addEventListener("DOMContentLoaded", () => {
         getProveedores();
     });
 </script>
+</body>
+</html>

@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.example.proyectofinal.Utils.EmailTemplates;
 
 import java.util.Map;
 
@@ -87,20 +88,21 @@ public class SecurityConfig {
             }
 
             // Enviar correo
-            try {
-                if (esNuevoUsuario) {
-                    emailService.enviarCorreo(
-                            email,
-                            "¡Bienvenido a Turnify!",
-                            "Hola " + name + ", gracias por registrarte en Turnify. Esperamos que disfrutes la experiencia."
-                    );
-                } else {
-                    emailService.enviarCorreo(
-                            email,
-                            "Inicio de sesión en Turnify",
-                            "Hola " + name + ", has iniciado sesión correctamente en Turnify."
-                    );
-                }
+                try {
+                    if (esNuevoUsuario) {
+                        emailService.enviarCorreo(
+                                email,
+                                "¡Bienvenido a Turnify!",
+                                EmailTemplates.getBienvenidaHtml(name)
+                        );
+                    } else {
+                        emailService.enviarCorreo(
+                                email,
+                                "Inicio de sesión en Turnify",
+                                EmailTemplates.getInicioSesionHtml(name)
+                        );
+                    }
+
             } catch (Exception e) {
                 e.printStackTrace(); // Log de errores, opcionalmente podrías usar logger
             }

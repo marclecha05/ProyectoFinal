@@ -38,6 +38,103 @@
             display: none;
             margin-top: 10px;
         }
+         :root {
+             --main-orange: #ffa56f;
+             --soft-bg: #fff8f1;
+             --dark-orange: #d8804b;
+         }
+
+        body {
+            font-family: 'Jura', sans-serif;
+            background-color: var(--soft-bg);
+            background-image: url("image/Fondo.jpeg");
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            font-weight: bold;
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: #444;
+        }
+
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: var(--main-orange);
+        }
+
+        .navbar-brand i {
+            color: var(--main-orange);
+        }
+
+        .bg-secondary {
+            background-color: var(--main-orange) !important;
+        }
+
+        .bg-light {
+            background-color: #fff !important;
+        }
+
+        .list-group-item {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--main-orange);
+            color: white;
+        }
+
+        .list-group .no-results {
+            background-color: #f5f5f5;
+            font-style: italic;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .card.bg-secondary {
+            background-color: var(--dark-orange) !important;
+        }
+
+        .card-title {
+            color: var(--main-orange);
+            font-weight: bold;
+        }
+
+        iframe {
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .input-group-text {
+            background-color: var(--main-orange);
+            color: white;
+            border: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--main-orange);
+            box-shadow: 0 0 0 0.25rem rgba(255,140,66,0.25);
+        }
+
+        .btn-outline-secondary {
+            color: var(--main-orange);
+            border-color: var(--main-orange);
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: var(--main-orange);
+            color: white;
+        }
     </style>
 </head>
 <body class="bg-light d-flex justify-content-center align-items-center vh-100"

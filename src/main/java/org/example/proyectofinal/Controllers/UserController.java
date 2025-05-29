@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+import org.example.proyectofinal.Utils.EmailTemplates;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,10 +73,16 @@ public class UserController {
             loggedUsuario = userService.findByUsername(authentication.getName());
         }
 
-        emailService.enviarCorreo(loggedUsuario.getEmail(), "¡Cuenta eliminada!", "Su cuenta ha sido eliminada con éxito.");
+        // Enviar correo con diseño bonito
+        String nombre = loggedUsuario.getUsername();
+        String email = loggedUsuario.getEmail();
+        String html = EmailTemplates.getCuentaEliminadaHtml(nombre);
+        emailService.enviarCorreo(email, "¡Cuenta eliminada!", html);
+
         userService.deleteById(loggedUsuario.getId());
 
         response.sendRedirect("/logout");
     }
+
 }
 
