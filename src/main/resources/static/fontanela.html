@@ -164,11 +164,11 @@
                    font-style: normal;
                }
 
-         :root {
-             --main-orange: #ffa56f;
-             --soft-bg: #fff8f1;
-             --dark-orange: #d8804b;
-         }
+        :root {
+            --main-orange: #ffa56f;
+            --soft-bg: #fff8f1;
+            --dark-orange: #d8804b;
+        }
 
         body {
             font-family: 'Jura', sans-serif;
@@ -291,7 +291,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="calendarioProveedor.html">Calendario Proveedor</a>
+                        <a class="nav-link" href="calendario.html">Calendario</a>
                     </li>
 
                     <li class="nav-item">
@@ -390,6 +390,7 @@
         <button id="reserveButton" class="btn btn-calendar w-100" disabled>Reservar</button>
     </div>
 </div>
+
 <script>
     const calendar = document.getElementById("calendar");
     const monthYear = document.getElementById("monthYear");
@@ -432,7 +433,70 @@
     let selectedDate = null;
     let selectedHour = null;
 
-    // Resto de funciones auxiliares (parseHour, formatHour, getHourSlots) igual...
+    function parseHour(hhmm) {
+        const [h, m] = hhmm.split(":").map(Number);
+        return h + m / 60;
+    }
+
+    function formatHour(hourFloat) {
+        const h = Math.floor(hourFloat);
+        const m = Math.round((hourFloat - h) * 60);
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+    }
+
+    function getHourSlots(timeSlots) {
+        const slots = [];
+        timeSlots.forEach(slot => {
+            let current = parseHour(slot[0]);
+            const endHour = parseHour(slot[1]);
+            while (current < endHour) {
+                slots.push(formatHour(current));
+                current += 1; // salto de una hora
+            }
+        });
+        return slots;
+    }
+
+    function updateHourOptions(dateStr, dayOfWeek) {
+        hourOptions.innerHTML = "";
+        selectedHour = null;
+
+        const timeSlots = openingHours[dayOfWeek - 1];
+        if (!timeSlots) return;
+
+        const availableHours = getHourSlots(timeSlots);
+        const dateReservations = reservations[dateStr] || [];
+
+        availableHours.forEach(hour => {
+            const countAtHour = dateReservations.filter(r => r.hour === hour).length;
+            const option = document.createElement("div");
+            option.classList.add("hour-option");
+            option.textContent = hour;
+
+            if (countAtHour >= 3) {
+                option.classList.add("disabled");
+                option.title = "No hay disponibilidad";
+            } else {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.hour-option').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    option.classList.add('selected');
+                    selectedHour = hour;
+                    checkReservationButton();
+                });
+            }
+
+            hourOptions.appendChild(option);
+        });
+    }
+
+    function checkReservationButton() {
+        reserveButton.disabled = !(selectedDate && selectedHour &&
+            reservationName.value.trim() &&
+            reservationGuests.value &&
+            parseInt(reservationGuests.value) > 0);
+    }
 
     let currentDate = new Date();
 
@@ -484,8 +548,6 @@
         }
     }
 
-    // Resto de funciones (updateHourOptions, checkReservationButton) igual...
-
     function makeReservation() {
         const name = reservationName.value.trim();
         const guests = reservationGuests.value;
@@ -521,15 +583,31 @@
         alert(`Reserva confirmada para el ${selectedDateDisplay.textContent} a las ${selectedHour}`);
     }
 
-    // Funciones de navegación del calendario (prevMonth, nextMonth) igual...
+    function prevMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        updateCalendar();
+        selectedDate = null;
+        selectedDateDisplay.textContent = "Seleccione un día";
+        hourOptions.innerHTML = "";
+        reserveButton.disabled = true;
+    }
 
-    // Event listeners igual...
+    function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        updateCalendar();
+        selectedDate = null;
+        selectedDateDisplay.textContent = "Seleccione un día";
+        hourOptions.innerHTML = "";
+        reserveButton.disabled = true;
+    }
+
+    // Event listeners
     reservationName.addEventListener('input', checkReservationButton);
     reservationGuests.addEventListener('input', checkReservationButton);
     reserveButton.addEventListener('click', makeReservation);
 
+    // Inicializar calendario
     updateCalendar();
 </script>
-
 </body>
 </html>
