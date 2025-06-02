@@ -33,7 +33,6 @@ public class RegisterController {
     @PostMapping("/registerForm")
     public void procesarRespuestas(@RequestParam String respuesta1,
                                    @RequestParam(required = false) String respuesta2, HttpServletResponse response, HttpSession session) throws IOException {
-        System.out.println("juan gilipollas");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email=((OAuth2User) authentication.getPrincipal()).getAttribute("email");
         Usuario usuario = userRepository.findByEmail(email);
