@@ -101,6 +101,18 @@
             color: white;
             padding: 2px 4px;
             border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-reservation {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 10px;
+            padding: 0 4px;
         }
 
         .btn-calendar {
@@ -150,6 +162,22 @@
             color: #999;
             cursor: not-allowed;
         }
+
+        .reservation-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
         body {
             font-family: Jura,serif;
             background-color: #f8f5eb;
@@ -312,7 +340,7 @@
                 <ul class="navbar-nav flex-row flex-wrap text-light">
 
                     <li class="nav-item col-6 col-md-auto p-3">
-                        <a class="text-black" href="https://github.com/marclecha05/ProyectoFinalGS.git">
+                        <a class="text-black" href="https://github.com/marclecha05/ProyectoFinal.git">
                             <i class="bi bi-github"></i>
                             <small class="d-md-none ms-2">GitHub</small>
                         </a>
@@ -387,7 +415,10 @@
             <div id="hourOptions" class="hour-options"></div>
         </div>
 
-        <button id="reserveButton" class="btn btn-calendar w-100" disabled>Reservar</button>
+        <div class="reservation-actions">
+            <button id="reserveButton" class="btn btn-calendar w-100" disabled>Reservar</button>
+            <button id="deleteButton" class="btn btn-delete" disabled>Eliminar</button>
+        </div>
     </div>
 </div>
 
@@ -399,6 +430,7 @@
     const reservationGuests = document.getElementById("reservationGuests");
     const hourOptions = document.getElementById("hourOptions");
     const reserveButton = document.getElementById("reserveButton");
+    const deleteButton = document.getElementById("deleteButton");
 
     // Horarios actualizados según los requisitos
     const openingHours = [
@@ -432,6 +464,7 @@
     let reservations = JSON.parse(localStorage.getItem('turnify_reservations')) || {};
     let selectedDate = null;
     let selectedHour = null;
+    let selectedReservation = null;
 
     function parseHour(hhmm) {
         const [h, m] = hhmm.split(":").map(Number);
@@ -460,6 +493,8 @@
     function updateHourOptions(dateStr, dayOfWeek) {
         hourOptions.innerHTML = "";
         selectedHour = null;
+        selectedReservation = null;
+        deleteButton.disabled = true;
 
         const timeSlots = openingHours[dayOfWeek - 1];
         if (!timeSlots) return;
@@ -483,6 +518,8 @@
                     });
                     option.classList.add('selected');
                     selectedHour = hour;
+                    selectedReservation = null;
+                    deleteButton.disabled = true;
                     checkReservationButton();
                 });
             }
@@ -496,6 +533,26 @@
             reservationName.value.trim() &&
             reservationGuests.value &&
             parseInt(reservationGuests.value) > 0);
+    }
+
+    function createDeleteButton(reservation, dateStr, index) {
+        const deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("delete-reservation");
+        deleteBtn.innerHTML = '<i class="bi bi-x-circle"></i>';
+        deleteBtn.title = "Eliminar reserva";
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (confirm(`¿Seguro que deseas eliminar la reserva de ${reservation.name} a las ${reservation.hour}?`)) {
+                reservations[dateStr].splice(index, 1);
+                if (reservations[dateStr].length === 0) {
+                    delete reservations[dateStr];
+                }
+                localStorage.setItem('turnify_reservations', JSON.stringify(reservations));
+                updateCalendar();
+                updateHourOptions(selectedDate, new Date(selectedDate).getDay() || 7);
+            }
+        });
+        return deleteBtn;
     }
 
     let currentDate = new Date();
@@ -529,10 +586,15 @@
             } else {
                 cell.innerHTML = `<div class="day-number">${day}</div>`;
                 const events = reservations[dateStr] || [];
-                events.forEach(ev => {
+
+                events.forEach((ev, index) => {
                     const resDiv = document.createElement("div");
                     resDiv.classList.add("reservation-slot");
                     resDiv.textContent = `${ev.hour} - ${ev.name} (${ev.guests})`;
+
+                    const deleteBtn = createDeleteButton(ev, dateStr, index);
+                    resDiv.appendChild(deleteBtn);
+
                     cell.appendChild(resDiv);
                 });
 
@@ -583,6 +645,30 @@
         alert(`Reserva confirmada para el ${selectedDateDisplay.textContent} a las ${selectedHour}`);
     }
 
+    function deleteReservation() {
+        if (!selectedReservation || !selectedDate) return;
+
+        if (confirm(`¿Seguro que deseas eliminar la reserva de ${selectedReservation.name} a las ${selectedReservation.hour}?`)) {
+            const dateReservations = reservations[selectedDate];
+            const index = dateReservations.findIndex(r =>
+                r.name === selectedReservation.name &&
+                r.hour === selectedReservation.hour &&
+                r.guests === selectedReservation.guests
+            );
+
+            if (index !== -1) {
+                dateReservations.splice(index, 1);
+                if (dateReservations.length === 0) {
+                    delete reservations[selectedDate];
+                }
+                localStorage.setItem('turnify_reservations', JSON.stringify(reservations));
+                updateCalendar();
+                updateHourOptions(selectedDate, new Date(selectedDate).getDay() || 7);
+                alert("Reserva eliminada correctamente");
+            }
+        }
+    }
+
     function prevMonth() {
         currentDate.setMonth(currentDate.getMonth() - 1);
         updateCalendar();
@@ -590,6 +676,7 @@
         selectedDateDisplay.textContent = "Seleccione un día";
         hourOptions.innerHTML = "";
         reserveButton.disabled = true;
+        deleteButton.disabled = true;
     }
 
     function nextMonth() {
@@ -599,12 +686,14 @@
         selectedDateDisplay.textContent = "Seleccione un día";
         hourOptions.innerHTML = "";
         reserveButton.disabled = true;
+        deleteButton.disabled = true;
     }
 
     // Event listeners
     reservationName.addEventListener('input', checkReservationButton);
     reservationGuests.addEventListener('input', checkReservationButton);
     reserveButton.addEventListener('click', makeReservation);
+    deleteButton.addEventListener('click', deleteReservation);
 
     // Inicializar calendario
     updateCalendar();
